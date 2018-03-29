@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyq.oa.dao.MenuMapper">
+
+  <select id="findAllMenu" resultType="com.yyq.oa.pojo.Menu">
+    SELECT menuid,parentid,menuname,url,perms,type,icon FROM menu
+  </select>
+
+  <insert id="addMenu" parameterType="com.yyq.oa.pojo.Menu">
+    <selectKey order="AFTER" resultType="int" keyProperty="menuId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO menu(parentid,menuname,url,perms,type,icon)
+    VALUES (#{parentId},#{menuName},#{url},#{perms},#{type},#{icon})
+  </insert>
+
+  <update id="updateMenu" parameterType="com.yyq.oa.pojo.Menu">
+    UPDATE menu
+    <if test="menu!=null">
+      <set>
+        <if test="menu.menuName!=null">
+          menuname=#{menu.menuName},
+        </if>
+        <if test="menu.url!=null">
+          url = #{menu.url},
+        </if>
+        <if test="menu.parentId!=null">
+          parentid = #{menu.parentId},
+        </if>
+        <if test="menu.perms!=null">
+          perms = #{menu.perms},
+        </if>
+        <if test="menu.type!=null">
+          type = #{menu.type},
+        </if>
+        <if test="menu.icon!=null">
+          icon = #{menu.icon}
+        </if>
+      </set>
+
+      WHERE menuid=#{menu.menuId}
+    </if>
+  </update>
+
+  <!--根据userid 查找用户权限-->
+  <select id="com.yyq.oa.dao.MenuMapper.getUserPermsList" resultType="java.lang.String">
+    SELECT m.perms FROM  menu m
+    LEFT JOIN role_menu rm ON m.menuid = rm.menuid
+    LEFT JOIN user_role ur ON rm.roleid = ur.roleid
+    Where ur.userid= #{userId}
+  </select>
+
+  <delete id="deleteMenu" parameterType="int">
+    DELETE FROM menu WHERE menuid IN
+    <foreach collection="menuId" item="id" open="(" separator="," close=")">
+      ${id}
+    </foreach>
+  </delete>
+
+  <select id="findMenu" parameterType="int" resultType="com.yyq.oa.pojo.Menu">
+      SELECT menuid,menuname,parentid,url,perms,type,icon FROM menu WHERE menuid=#{menuId}
+  </select>
+
+  <select id="findMenusIdByRoleId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+      SELECT menuid FROM role_menu
+      WHERE roleid =#{roleId}
+  </select>
+  
+  <select id="findAllUrlPerms" resultType="com.yyq.oa.vo.Perms">
+    SELECT url,perms FROM menu
+  </select>
+
+</mapper>

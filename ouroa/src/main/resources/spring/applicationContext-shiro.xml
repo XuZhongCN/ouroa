@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!--初始化工程的bean-->
+  <!--<bean class="com.yyq.oa.init.InitDataListener"/>-->
+  <!-- 自定义用户realm -->
+  <bean id="userRealm" class="com.yyq.oa.shiro.UserRealm">
+    <!--<property name="credentialsMatcher">
+      <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="MD5"></property>
+        <property name="hashIterations" value="1024"></property>
+        <property name="hashSalted" value="true"></property>
+      </bean>
+    </property>-->
+  </bean>
+
+  <!-- 配置缓存 -->
+  <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+    <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+  </bean>
+
+  <!-- 配置securityManger -->
+  <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    <property name="realm" ref="userRealm"/>
+    <property name="cacheManager" ref="cacheManager"/>
+    <property name="rememberMeManager.cookie.maxAge" value="600"/>
+  </bean>
+
+  <!-- 配置主过滤器 -->
+  <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+    <!-- shiro核心安全接口，必须配置 -->
+    <property name="securityManager" ref="securityManager"></property>
+    <!--  登陆时跳转到的页面，自动在contextPath下查找 -->
+    <property name="loginUrl" value="/login.html"></property>
+    <!--  登陆成功后跳转的页面 -->
+    <property name="successUrl" value="/index.action"></property>
+    <!--  授权失败时跳转的页面 -->
+    <property name="unauthorizedUrl" value="/unauthorized.html"></property>
+    <property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
+  </bean>
+
+  <bean id="filterChainDefinitionMap" factory-bean="filterChainDefinitionMapBuilder" factory-method="build"></bean>
+  <bean id="filterChainDefinitionMapBuilder" class="com.yyq.oa.shiro.FilterChainDefinitionMapBuilder"></bean>
+</beans>

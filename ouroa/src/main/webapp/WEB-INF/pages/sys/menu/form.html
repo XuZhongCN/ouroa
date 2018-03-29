@@ -1,0 +1,120 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>OA</title>
+  <link rel="shortcut icon" href="images/logo.ico">
+
+  <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- bootstrap table -->
+  <link href="/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+  <link href="/css/animate.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+  <!-- ztree -->
+  <link rel="stylesheet" href="/libs/zTree_v3/css/metroStyle/metroStyle.css"/>
+
+  <!-- 自定义css -->
+  <link href="/css/my.css" rel="stylesheet">
+</head>
+<body class="my-content">
+<div id="oa" v-cloak>
+  <div class="panel panel-default">
+    <!--弃用 form表单-->
+    <div class="panel-heading" th:text="*{title}"></div>
+    <input type="hidden" class="form-control" id="flag" th:value="*{flag}">
+    <input type="hidden" class="form-control" id="menuId" th:value="*{menuId}">
+
+    <div class="panel-body">
+      <form id="myform" method="post" class="form-horizontal myform" novalidate>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">类型</label>
+          <label class="radio-inline">
+            <input type="radio" name="type" v-model="menu.type" value="0"> 目录
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="type" v-model="menu.type" value="1"> 菜单
+          </label>
+          <label class="radio-inline">
+            <input type="radio" name="type" v-model="menu.type" value="2"> 按钮
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label">菜单名称</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="menuName" v-model="menu.menuName">
+          </div>
+        </div>
+        <!--zTree start-->
+        <div class="form-group">
+          <label class="col-sm-4 control-label">上级菜单</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="parentMenu" placeholder="一级菜单"
+                   v-model="menu.parentMenu.name" @click="menuTree" readonly="readonly">
+          </div>
+        </div>
+        <!--zTree end-->
+        
+        <!-- v-show="menu.type == 1"-->
+        <div class="form-group">
+          <label class="col-sm-4 control-label">菜单URL</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="url" v-model="menu.url">
+          </div>
+        </div>
+        <!--v-show="menu.type == 1 || menu.type == 2"-->
+        <div class="form-group">
+          <label class="col-sm-4 control-label">授权标识</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="perms" v-model="menu.perms">
+          </div>
+        </div>
+        <!--<div v-show="menu.type == 0 || menu.type == 1" class="form-group">
+          <label class="col-sm-4 control-label">排序号</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="orderNum" v-model="menu.orderNum">
+          </div>
+        </div>
+        <div v-show="menu.type == 0 || menu.type == 1" class="form-group">
+          <label class="col-sm-4 control-label">图标</label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" name="icon" v-model="menu.icon">
+          </div>
+        </div>-->
+        <div class="hr-line-dashed"></div>
+        <div class="form-group pull-right">
+          <div class="col-sm-12">
+            <button class="btn btn-primary" type="button" @click="saveOrUpdate">保存内容</button>
+            <a href="index.action" class="btn btn-white">取消</a>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div id="menuLayer" style="display: none; padding: 10px;">
+  <ul id="menuTree" class="ztree"></ul>
+</div>
+
+<!-- 全局js -->
+<script src="/libs/jquery.min.js"></script>
+<script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="/libs/vue.min.js"></script>
+
+<!--浮层-->
+<script src="/libs/layer/layer.min.js"></script>
+<!-- ztree -->
+<script src="/libs/zTree_v3/js/jquery.ztree.all.min.js"></script>
+
+<!--  -->
+<script src="/libs/FastJson-1.0.min.js"></script>
+
+<!-- 全局通用js配置 -->
+<script src="/script/common.js"></script>
+<!-- 模块 -->
+<script src="/script/modules/sys/menu/form.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyq.oa.dao.RoleMapper">
+
+  <select id="findAllRole" resultType="com.yyq.oa.pojo.Role">
+      SELECT roleid,rolename,remark,createuserid,createtime FROM role
+  </select>
+
+  <insert id="addRole" parameterType="com.yyq.oa.pojo.Role">
+    <selectKey order="AFTER" resultType="int" keyProperty="roleId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    INSERT INTO role(rolename,remark,createuserid,createtime)
+    VALUES (#{roleName},#{remark},#{createUserId},#{createTime})
+  </insert>
+
+  <delete id="deleteRole" parameterType="int">
+    DELETE FROM role WHERE roleid IN
+    <foreach collection="roleId" item="id" open="(" separator="," close=")">
+      ${id}
+    </foreach>
+  </delete>
+
+  <update id="updateRole" parameterType="com.yyq.oa.pojo.Role">
+    <if test="role!=null">
+      UPDATE role
+      <set>
+        <if test="role.roleName!=null">
+          rolename = #{role.roleName},
+        </if>
+        <if test="role.remark!=null">
+          remark = #{role.remark}
+        </if>
+      </set>
+      WHERE roleid = #{role.roleId}
+    </if>
+  </update>
+
+  <select id="findRole" parameterType="int" resultType="com.yyq.oa.pojo.Role">
+       SELECT roleid,rolename,remark,createuserid,createtime FROM role WHERE roleid = #{roleId}
+  </select>
+
+  <!--getUserRoleList-->
+  <select id="com.yyq.oa.dao.RoleMapper.getUserRoleList" resultType="java.lang.String">
+    SELECT r.rolename FROM role r
+    LEFT JOIN user_role ur ON r.roleid = ur.roleid
+    WHERE ur.userid = #{userId}
+  </select>
+</mapper>

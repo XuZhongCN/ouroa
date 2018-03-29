@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vuetest</title>
+  <style>
+    .active {
+      background: green;
+      width: 100px;
+      height: 100px
+    }
+
+    .text-danger {
+      background: red;
+      width: 100px;
+      height: 100px
+    }
+
+    .static {
+      /* 属性叠加 */
+      color: yellow;
+      background: purple
+    }
+  </style>
+</head>
+
+<body>
+<div id="app">
+  <div class="static" v-bind-class=" {active:isActive,'text-danger':hasError}"><h1>QJY</h1></div>
+  <input type="checkbox" v-model="isActive">isActive
+  <input type="checkbox" v-model="hasError">hasError
+</div>
+</div>
+<script src="../libs/vue.min.js"></script>
+<script type="text/javascript">
+    new Vue({el: '#app', data: {isActive: false, hasError: true}});
+</script>
+</body>
+
+</html>

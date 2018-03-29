@@ -1,0 +1,102 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/css/base.css"/>
+  <link rel="stylesheet" href="/css/jquery.dialog.css"/>
+  <link rel="stylesheet" href="/css/index.css"/>
+  <link rel="shortcut icon" href="/images/logo.ico">
+
+  <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+  <link href="/css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/libs/jquery.datetimepicker/jquery.datetimepicker.css" rel="stylesheet">
+  <link href="/libs/zTree_v3/css/metroStyle/metroStyle.css" rel="stylesheet">
+
+  <!-- bootstrap table -->
+  <link href="/libs/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+
+  <link href="/css/animate.css" rel="stylesheet">
+  <link href="/css/style.css" rel="stylesheet">
+
+  <!-- 自定义css -->
+  <link href="/css/my.css" rel="stylesheet">
+
+  <title>OUROA</title>
+</head>
+
+<body>
+
+<div id="oa" v-cloak>
+  <div class="panel panel-default">
+    <!--弃用 form表单-->
+    <div class="panel-heading" th:text="*{title}"></div>
+    <input type="hidden" class="form-control" id="flag" th:value="*{flag}">
+    <input type="hidden" class="form-control" id="roleId" th:value="*{roleId}">
+
+    <div class="panel-body">
+      <form class="form-horizontal">
+        <div class="form-group">
+          <div class="col-sm-2 control-label">角色名称</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="roleName" v-model="role.roleName"
+                   th:value="*{role.roleName}" placeholder="角色名称"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-2 control-label">备注</div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="remark" v-model="role.remark" th:value="*{role.remark}"
+                   placeholder="备注"/>
+          </div>
+        </div>
+        <!--zTree-->
+        <div class="form-group">
+          <div class="col-sm-2 control-label">授权</div>
+          <div class="col-sm-10 " v-cloak>
+            <ul id="menuTree" class="ztree"></ul>
+          </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        <div class="form-group pull-right">
+          <div class="col-sm-12">
+            <button type="button" class="btn btn-primary" @click="saveOrUpdate">确定</button>
+            <a href="/sys/role/index.action" class="btn btn-white">返回</a>
+          </div>
+        </div>
+
+
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+</body>
+<!--<script type="text/javascript" src="/js/jquery.js"></script>-->
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/core.js"></script>
+<script type="text/javascript" src="/js/jquery.dialog.js"></script>
+<script type="text/javascript" src="/js/index.js"></script>
+<!-- 全局js -->
+<script src="/libs/jquery.min.js"></script>
+<script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- vue -->
+<script src="/libs/vue.min.js"></script>
+<!--浮层-->
+<script src="/libs/layer/layer.min.js"></script>
+<!-- bootstrap table -->
+<script src="/libs/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="/libs/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<!--ztree-->
+<script src="/libs/zTree_v3/js/jquery.ztree.all.min.js"></script>
+<!-- fastjson 解析-->
+<script src="/libs/FastJson-1.0.min.js"></script>
+<!-- 全局js设置 -->
+<script src="/script/common.js"></script>
+<!-- 模块 -->
+<script src="/script/modules/sys/role/form.js"></script>
+</html>
